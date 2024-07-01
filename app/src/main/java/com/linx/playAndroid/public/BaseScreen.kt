@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsHeight
 
 /**
  * 在不想使用透明状态栏/导航栏的时候
@@ -23,12 +23,12 @@ fun BaseScreen(content: @Composable () -> Unit) {
     ) {
 
         //内容不挡住状态栏 如果不设置颜色这里会自己适配，但可能产生闪烁
-        Spacer(modifier = Modifier.background(MaterialTheme.colors.primary).statusBarsHeight().fillMaxWidth())
+        Spacer(modifier = Modifier.background(MaterialTheme.colors.primary).statusBarsPadding().fillMaxWidth())
 
         content()
 
         //内容不挡住导航栏 如果不设置颜色这里会自己适配，但可能产生闪烁
-        Spacer(modifier = Modifier.background(MaterialTheme.colors.primary).navigationBarsHeight().fillMaxWidth())
+        Spacer(modifier = Modifier.background(MaterialTheme.colors.primary).navigationBarsPadding().fillMaxWidth())
 
     }
 

@@ -8,6 +8,6 @@ object MineRepo {
     /**
      * 获取个人积分
      */
-    fun getUserInfoIntegral() = ServiceCreator.getService<MineService>().getUserInfoIntegral()
+    suspend fun getUserInfoIntegral() = ServiceCreator.getService<MineService>().getUserInfoIntegral()
 
 }

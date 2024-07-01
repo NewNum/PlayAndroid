@@ -43,7 +43,6 @@ private fun MyCollectScreen(navHostController: NavHostController, myCollectViewM
             },
             content = { paddingValues: PaddingValues ->
                 SwipeRefreshContent(
-                    myCollectViewModel,
                     myCollectListData
                 ) { index: Int, data: MyCollectData ->
                     data.apply {

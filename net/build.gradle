@@ -6,36 +6,39 @@ plugins {
 }
 
 android {
-    compileSdk compile_sdk_version
+    compileSdk 34
 
     defaultConfig {
-        minSdk min_sdk_version
-        targetSdk target_sdk_version
-        versionCode version_code
-        versionName version_name
+        minSdk 21
+        targetSdk 34
     }
 
     compileOptions {
-        sourceCompatibility java_version
-        targetCompatibility java_version
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+    namespace 'com.linx.net'
 }
 
 dependencies {
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
 
     //retrofit
-    api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api libs.retrofit2
+    api libs.retrofit2.converter.gson
 
-    //okHttp
-    api "com.squareup.okhttp3:okhttp:$okhttp_version"
+    // define a BOM and its version
+    implementation(platform(libs.okhttpBom))
+
+    // define any required OkHttp artifacts without version
+    api(libs.okhttp)
+    api(libs.loggingInterceptor)
 
     //paging3
-    api "androidx.paging:paging-runtime:$paging_version"
-    api "androidx.paging:paging-compose:$paging_compose_version"
+    api libs.androidx.paging.runtime.ktx
+    api libs.pagingCompose
 
     //数据保存，这里用于cookie持久化
-    api "androidx.datastore:datastore-preferences:$datastore_version"
+    api libs.datastorePreferences
 }

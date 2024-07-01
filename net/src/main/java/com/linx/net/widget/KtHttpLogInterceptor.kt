@@ -15,7 +15,7 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
     private var logLevel: LogLevel = LogLevel.NONE //打印日期的标记
     private var colorLevel: ColorLevel = ColorLevel.DEBUG //默认是debug级别的logcat
     private var logTag: String = TAG //日志的logcat的Tag
-    private var MILLIS_PATTERN:String = "yyyy-MM-dd HH:mm:ss"
+    private var MILLIS_PATTERN: String = "yyyy-MM-dd HH:mm:ss"
 
     init {
         block?.invoke(this)
@@ -80,12 +80,15 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
             LogLevel.NONE -> {
 
             }
+
             LogLevel.BASIC -> {
                 logBasicReq(strb, request, connection)
             }
+
             LogLevel.HEADERS -> {
                 logHeadersReq(strb, request, connection)
             }
+
             LogLevel.BODY -> {
                 logBodyReq(strb, request, connection)
             }
@@ -103,15 +106,18 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
 
     private fun logHeadersReq(strb: StringBuilder, request: Request, connection: Connection?) {
         logBasicReq(strb, request, connection)
-        val headerStr: String = request.headers.joinToString { header ->
-            "请求 Header:{${header.first}=${header.second}}\n"
-        }
-        strb.appendln(headerStr)
+
+        val headerStr: String = request.headers.joinToString()
+        strb.appendLine(headerStr)
     }
 
     private fun logBasicReq(strb: StringBuilder, request: Request, connection: Connection?) {
         strb.appendLine(
-            "请求 method：${request.method} url:${decodeUrlStr(request.url.toString())} tag:" +
+            "请求 method：${request.method} url:${
+                decodeUrlStr(
+                    request.url.toString()
+                )
+            } tag:" +
                     "${request.tag()} protocol:${connection?.protocol() ?: Protocol.HTTP_1_1}"
         )
     }
@@ -127,12 +133,15 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
             LogLevel.NONE -> {
                 /*do nothing*/
             }
+
             LogLevel.BASIC -> {
-                logBasicRep(strb,response)
+                logBasicRep(strb, response)
             }
+
             LogLevel.HEADERS -> {
                 logHeadersRep(response, strb)
             }
+
             LogLevel.BODY -> {
                 logHeadersRep(response, strb)
                 kotlin.runCatching {
@@ -150,27 +159,27 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
     }
 
     private fun logHeadersRep(response: Response, strb: StringBuffer) {
-       logBasicRep(strb,response)
-        val headerStr:String=response.headers.joinToString {
-            header->"响应 Header:{${header.first}=${header.second}}\n"
-        }
+        logBasicRep(strb, response)
+        val headerStr: String = response.headers.joinToString()
         strb.appendLine(headerStr)
     }
 
     private fun logBasicRep(strb: StringBuffer, response: Response) {
-         strb.appendLine("响应 protocol:${response.protocol} code:${response.cacheControl} message:${response.message}")
-             .appendLine("响应 request Url: ${decodeUrlStr(response.request.url.toString())}")
-             .appendLine("响应 sentRequestTime:${
-                 toDateTimeStr(
-                 response.sentRequestAtMillis,
-                 MILLIS_PATTERN
-             )
-             } receivedResponseTime:${
+        strb.appendLine("响应 protocol:${response.protocol} code:${response.cacheControl} message:${response.message}")
+            .appendLine("响应 request Url: ${decodeUrlStr(response.request.url.toString())}")
+            .appendLine(
+                "响应 sentRequestTime:${
+                    toDateTimeStr(
+                        response.sentRequestAtMillis,
+                        MILLIS_PATTERN
+                    )
+                } receivedResponseTime:${
                     toDateTimeStr(
                         response.receivedResponseAtMillis,
                         MILLIS_PATTERN
                     )
-             }")
+                }"
+            )
     }
 
 
@@ -185,7 +194,7 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
 
     /**
      * 打印日志
-      */
+     */
     private fun logIt(any: Any, tempLevel: ColorLevel? = null) {
         when (tempLevel ?: colorLevel) {
             ColorLevel.VERBOSE -> Log.v(logTag, any.toString())

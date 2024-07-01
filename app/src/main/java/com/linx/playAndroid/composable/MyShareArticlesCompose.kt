@@ -44,7 +44,6 @@ private fun MyShareArticlesScreen(
             },
             content = { paddingValues: PaddingValues ->
                 SwipeRefreshContent(
-                    myShareArticlesViewModel,
                     myShareArticlesListData
                 ) { index: Int, data: MyCollectData ->
                     data.apply {

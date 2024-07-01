@@ -15,9 +15,9 @@ object SquareRepo {
     suspend fun getQuestionAnswer(page: Int) = ServiceCreator.getService<SquareService>().getQuestionAnswers(page)
 
     //获取体系数据
-    fun getSystem() = ServiceCreator.getService<SquareService>().getSystem()
+    suspend  fun getSystem() = ServiceCreator.getService<SquareService>().getSystem()
 
     //获取导航数据
-    fun getNavi() = ServiceCreator.getService<SquareService>().getNavi()
+    suspend   fun getNavi() = ServiceCreator.getService<SquareService>().getNavi()
 
 }

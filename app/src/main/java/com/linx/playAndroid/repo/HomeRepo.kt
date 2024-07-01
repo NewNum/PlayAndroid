@@ -1,7 +1,10 @@
 package com.linx.playAndroid.repo
 
 import com.linx.net.base.ServiceCreator
+import com.linx.net.model.BaseResponse
+import com.linx.playAndroid.model.HomeBannerData
 import com.linx.playAndroid.service.HomeService
+import retrofit2.Call
 
 object HomeRepo {
 
@@ -9,7 +12,8 @@ object HomeRepo {
     suspend fun getHomeList(page: Int) = ServiceCreator.getService<HomeService>().getHomeList(page)
 
     //首页轮播图
-    fun getBanner() = ServiceCreator.getService<HomeService>().getBanner()
+    fun getBanner()= ServiceCreator.getService<HomeService>().getBanner()
+
 
     //获取置顶文章列表
     fun getArticleTopList() = ServiceCreator.getService<HomeService>().getArticleTopList()

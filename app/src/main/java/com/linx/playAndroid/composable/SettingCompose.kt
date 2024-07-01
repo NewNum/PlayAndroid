@@ -5,10 +5,10 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -62,8 +62,8 @@ fun SettingCompose(navHostController: NavHostController) {
                 "哟，你发现了啥？Lottie动画！".toast(content)
             }
         },
-            content = { paddingValues: PaddingValues ->
-                SettingCenterScreen(navHostController, settingViewModel)
+            content = {
+                SettingCenterScreen(navHostController, settingViewModel,it)
             }
         )
     }
@@ -76,7 +76,8 @@ fun SettingCompose(navHostController: NavHostController) {
 @Composable
 private fun SettingCenterScreen(
     navHostController: NavHostController,
-    settingViewModel: SettingViewModel
+    settingViewModel: SettingViewModel,
+    paddingValues: PaddingValues,
 ) {
 
     val context = LocalContext.current
@@ -182,7 +183,7 @@ private fun ThemeSelectedScreen() {
     //垂直GridList
     LazyVerticalGrid(
         //每行的数量
-        cells = GridCells.Fixed(4)
+        columns = GridCells.Fixed(4)
     ) {
         itemsIndexed(themeColorList) { index: Int, theme: ThemeType ->
             Surface(

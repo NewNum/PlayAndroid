@@ -1,6 +1,5 @@
 package com.linx.net.ext
 
-import android.util.Log
 import com.linx.net.model.DataResult
 import retrofit2.Call
 import retrofit2.await

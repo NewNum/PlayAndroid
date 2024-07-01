@@ -17,61 +17,63 @@ object ServiceCreator {
     private const val SET_COOKIE_KEY = "set-cookie"
     private const val COOKIE_NAME = "Cookie"
 
-    private val mOkClient: OkHttpClient = OkHttpClient.Builder()
-        //完整请求超时时长，从发起到接受返回数据，默认0s
-        .callTimeout(10, TimeUnit.SECONDS)
-        //与服务器建立链接的时长，默认10s
-        .connectTimeout(10, TimeUnit.SECONDS)
-        //读取服务器返回数据的时长
-        .readTimeout(10, TimeUnit.SECONDS)
-        //向服务器写入数据的时长，默认10s
-        .writeTimeout(10, TimeUnit.SECONDS)
-        //是否重连
-        .retryOnConnectionFailure(true)
-        //是否重定向
-        .followRedirects(false)
-        //保存cookie
-        .addInterceptor {
-            val request = it.request()
-            val response = it.proceed(request)
-            val requestUrl = request.url.toString()
-            val domain = request.url.host
-            //cookie可能有多个，都保存下来
-            if ((requestUrl.contains(SAVE_USER_LOGIN_KEY) || requestUrl.contains(
-                    SAVE_USER_REGISTER_KEY
-                )) && response.headers(SET_COOKIE_KEY).isNotEmpty()
-            ) {
-                val cookies = response.headers(SET_COOKIE_KEY)
-                val cookie = encodeCookie(cookies)
-                saveCookie(requestUrl, domain, cookie)
-            }
-            response
-        }
-        //请求时设置cookie
-        .addInterceptor {
-            val request = it.request()
-            val builder = request.newBuilder()
-            val domain = request.url.host
-            //获取domain内的cookie
-            if (domain.isNotEmpty()) {
-                val sqDomain: String = DataStoreUtils.readStringData(domain, "")
-                val cookie: String = if (sqDomain.isNotEmpty()) sqDomain else ""
-                if (cookie.isNotEmpty()) {
-                    builder.addHeader(COOKIE_NAME, cookie)
+    private val mOkClient by lazy {
+        OkHttpClient.Builder()
+            //完整请求超时时长，从发起到接受返回数据，默认0s
+            .callTimeout(10, TimeUnit.SECONDS)
+            //与服务器建立链接的时长，默认10s
+            .connectTimeout(10, TimeUnit.SECONDS)
+            //读取服务器返回数据的时长
+            .readTimeout(10, TimeUnit.SECONDS)
+            //向服务器写入数据的时长，默认10s
+            .writeTimeout(10, TimeUnit.SECONDS)
+            //是否重连
+            .retryOnConnectionFailure(true)
+            //是否重定向
+            .followRedirects(false)
+            //保存cookie
+            .addInterceptor {
+                val request = it.request()
+                val response = it.proceed(request)
+                val url = request.url
+                val requestUrl = url.toString()
+                val domain = url.host
+                //cookie可能有多个，都保存下来
+                if ((requestUrl.contains(SAVE_USER_LOGIN_KEY)
+                            || requestUrl.contains(SAVE_USER_REGISTER_KEY))
+                    && response.headers(SET_COOKIE_KEY).isNotEmpty()
+                ) {
+                    val cookies = response.headers(SET_COOKIE_KEY)
+                    val cookie = encodeCookie(cookies)
+                    saveCookie(requestUrl, domain, cookie)
                 }
+                response
             }
-            it.proceed(builder.build())
-        }
-        //添加网络拦截器，打印日志
-        .addNetworkInterceptor(KtHttpLogInterceptor {
-            logLevel(KtHttpLogInterceptor.LogLevel.BODY)
-        })
-        .build()
+            //请求时设置cookie
+            .addInterceptor {
+                val request = it.request()
+                val builder = request.newBuilder()
+                val domain = request.url.host
+                //获取domain内的cookie
+                if (domain.isNotEmpty()) {
+                    val sqDomain: String = DataStoreUtils.readStringData(domain, "")
+                    val cookie: String = if (sqDomain.isNotEmpty()) sqDomain else ""
+                    if (cookie.isNotEmpty()) {
+                        builder.addHeader(COOKIE_NAME, cookie)
+                    }
+                }
+                it.proceed(builder.build())
+            }
+            //添加网络拦截器，打印日志
+            .addNetworkInterceptor(KtHttpLogInterceptor {
+                logLevel(KtHttpLogInterceptor.LogLevel.BODY)
+            })
+            .build()
+    }
 
     /**
      * 保存cookie
      */
-    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     private fun saveCookie(url: String?, domain: String?, cookies: String) {
         url ?: return
         DataStoreUtils.putSyncData(url, cookies)
@@ -81,15 +83,16 @@ object ServiceCreator {
 
     private var retrofit: Retrofit? = null
 
-    private val retrofitBuilder = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(mOkClient)
+    private val retrofitBuilder by lazy {
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+    }
 
     /**
      * 初始化配置
      */
     fun initConfig(baseUrl: String, okClient: OkHttpClient = mOkClient): ServiceCreator {
-        retrofit = retrofitBuilder.baseUrl(baseUrl).client(mOkClient).build()
+        retrofit = retrofitBuilder.baseUrl(baseUrl).client(okClient).build()
         return this
     }
 
@@ -100,11 +103,8 @@ object ServiceCreator {
      * 获取retrofit的service对象
      */
     fun <T> create(serviceClazz: Class<T>): T {
-        if (retrofit == null) {
-            throw UninitializedPropertyAccessException("Retrofit必须初始化，需要配置baseUrl")
-        } else {
-            return retrofit!!.create(serviceClazz)
-        }
+        return retrofit?.create(serviceClazz)
+            ?: throw UninitializedPropertyAccessException("Retrofit必须初始化，需要配置baseUrl")
     }
 
 }

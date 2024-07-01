@@ -46,7 +46,6 @@ fun ProjectCompose(navHostController: NavHostController) {
 
     //项目页面的内容
     SwipeRefreshContent(
-        projectViewModel,
         projectListData,
         state = projectViewModel.projectLazyListState,
         cardHeight = 190.dp

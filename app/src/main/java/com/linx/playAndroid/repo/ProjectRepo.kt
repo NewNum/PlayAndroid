@@ -9,7 +9,7 @@ object ProjectRepo {
     /**
      * 获取项目分类
      */
-    fun getProjectTree() = ServiceCreator.getService<ProjectService>().getProjectTree()
+    suspend fun getProjectTree() = ServiceCreator.getService<ProjectService>().getProjectTree()
 
     /**
      * 获取项目列表数据

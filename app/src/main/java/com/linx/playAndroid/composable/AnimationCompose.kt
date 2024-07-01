@@ -1,5 +1,6 @@
 package com.linx.playAndroid.composable
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -9,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -56,8 +58,10 @@ fun AnimationCompose(navHostController: NavHostController) {
             },
             modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-                item {
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item(){
                     AnimationScreen()
                 }
             }
@@ -488,19 +492,23 @@ private fun AnimatedVisibilityAnimated() {
             visible = expanded,
             //进入
             enter = slideIn(
-                {
-                    IntOffset(0, 60.dp.value.toInt())
-                },
+
                 tween(
                     easing = LinearOutSlowInEasing,
                     durationMillis = 500
                 )
-            ),
-            //退出
-            exit = slideOut({
+            ) {
                 IntOffset(0, 60.dp.value.toInt())
-            }, tween(easing = FastOutSlowInEasing, durationMillis = 500))
-        ) {
+            },
+            //退出
+            exit = slideOut(
+                tween(easing = FastOutSlowInEasing, durationMillis = 500),
+                {
+                    IntOffset(0, 60.dp.value.toInt())
+                },
+            ),
+
+            ) {
             Text(text = "slideIn/ slideOut", fontSize = 12.sp)
         }
     }
@@ -691,9 +699,11 @@ private fun MultiStateAnimationCircleStrokeCanvas() {
     val stroke = Stroke(8f)
     val primary = getThemeColor(themeType = themeTypeState.value).primary
 
-    Canvas(modifier = Modifier
-        .padding(16.dp)
-        .size(100.dp)) {
+    Canvas(
+        modifier = Modifier
+            .padding(16.dp)
+            .size(100.dp)
+    ) {
         //宽度和高度的大小中较小的
         val diameter = size.minDimension
         val radius = diameter / 2

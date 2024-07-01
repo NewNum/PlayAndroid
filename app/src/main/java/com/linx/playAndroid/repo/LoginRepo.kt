@@ -9,7 +9,7 @@ object LoginRepo {
     /**
      * 登录
      */
-    fun getUserLogin(username: String, password: String) =
+    suspend fun getUserLogin(username: String, password: String) =
         ServiceCreator.getService<LoginService>().getUserLogin(username, password)
 
 }

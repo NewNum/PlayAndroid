@@ -14,10 +14,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import coil.annotation.ExperimentalCoilApi
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsHeight
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.linx.common.baseData.Nav
 import com.linx.playAndroid.KeyNavigationRoute
 import com.linx.playAndroid.NavigationHost
@@ -32,8 +28,6 @@ import com.linx.playAndroid.viewModel.PublicNumViewModel
  * 主界面
  * [onFinish] 点击两次返回关闭页面
  */
-@ExperimentalCoilApi
-@ExperimentalPagerApi
 @Composable
 fun MainCompose(
     navHostController: NavHostController = rememberNavController(),
@@ -56,7 +50,7 @@ fun MainCompose(
                     Spacer(
                         modifier = Modifier
                             .background(MaterialTheme.colors.primary)
-                            .statusBarsHeight()
+                            .statusBarsPadding()
                             .fillMaxWidth()
                     )
 
@@ -71,7 +65,7 @@ fun MainCompose(
                     Spacer(
                         modifier = Modifier
                             .background(MaterialTheme.colors.primary)
-                            .navigationBarsHeight()
+                            .navigationBarsPadding()
                             .fillMaxWidth()
                     )
                 }

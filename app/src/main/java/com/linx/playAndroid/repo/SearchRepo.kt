@@ -6,6 +6,6 @@ import com.linx.playAndroid.service.SearchService
 object SearchRepo {
 
     //获取搜索热词
-    fun getHotKey() = ServiceCreator.getService<SearchService>().getHotKey()
+    suspend   fun getHotKey() = ServiceCreator.getService<SearchService>().getHotKey()
 
 }

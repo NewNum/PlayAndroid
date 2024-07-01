@@ -98,7 +98,6 @@ private fun SquareAndQuestionComposable(
 ) {
     //广场页面广场模块内容
     SwipeRefreshContent(
-        squareViewModel,
         listdata,
         state = state
     ) { index, data ->

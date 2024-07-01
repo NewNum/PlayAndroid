@@ -22,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.google.accompanist.insets.navigationBarsPadding
 import com.linx.playAndroid.model.CoinRankData
 import com.linx.playAndroid.public.AppBar
 import com.linx.playAndroid.public.BaseScreen
@@ -83,7 +82,6 @@ private fun IntegralScreen(
             content = { paddingValues: PaddingValues ->
                 //带刷新头的列表
                 SwipeRefreshContent(
-                    integralRankViewModel,
                     coinRankData,
                     cardHeight = 65.dp
                 ) { index: Int, data: CoinRankData ->

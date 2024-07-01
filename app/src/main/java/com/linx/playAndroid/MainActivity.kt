@@ -9,8 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
 import coil.annotation.ExperimentalCoilApi
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.linx.common.baseData.themeTypeState
 import com.linx.playAndroid.ui.theme.CustomThemeManager
 import com.linx.common.widget.TwoBackFinish
@@ -19,7 +17,6 @@ import com.linx.playAndroid.composable.MainCompose
 class MainActivity : ComponentActivity() {
 
     @ExperimentalCoilApi
-    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,11 +28,8 @@ class MainActivity : ComponentActivity() {
 
             //主题包裹
             CustomThemeManager.WanAndroidTheme(themeState) {
-                //可以获取状态栏高度
-                ProvideWindowInsets {
-                    //主界面
-                    MainCompose(onFinish = { finish() })
-                }
+                //主界面
+                MainCompose(onFinish = { finish() })
             }
         }
 

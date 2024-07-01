@@ -1,0 +1,69 @@
+[versions]
+activityCompose = "1.9.0"
+agp = "8.5.0"
+coilCompose = "2.6.0"
+datastorePreferences = "1.1.1"
+lifecycleViewmodelCompose = "2.8.2"
+lottieCompose = "4.0.0"
+mmkvStatic = "1.2.8"
+navigationCompose = "2.7.7"
+okhttpBom = "4.12.0"
+pagingCompose = "3.3.0"
+room = "2.6.1"
+startupRuntime = "1.1.1"
+uiTestJunit4 = "1.6.8"
+uiTooling = "1.6.8"
+appcompat = "1.7.0"
+kotlin = "2.0.0"
+lifecycleRuntimeKtx = "2.8.2"
+material = "1.6.8"
+accompanistSwiperefresh = "0.34.0"
+
+[libraries]
+
+accompanistInsetsUi = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "accompanistSwiperefresh" }
+accompanistPager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistSwiperefresh" }
+accompanistSwiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
+accompanistSystemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSwiperefresh" }
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx_core_ktx = { group = "androidx.core", name = "core-ktx", version = "1.13.1" }
+androidx_appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycleRuntimeKtxV282 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+material = { group = "com.google.android.material", name = "material", version = "1.12.0" }
+coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+lifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version = "4.12.0" }
+lottieCompose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+androidx_paging_runtime_ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version = "3.3.0" }
+mmkvStatic = { module = "com.tencent:mmkv-static", version.ref = "mmkvStatic" }
+navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+okhttp = { module = "com.squareup.okhttp3:okhttp" }
+okhttpBom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBom" }
+pagingCompose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version = "2.9.0" }
+retrofit2_converter_gson = { group = "com.squareup.retrofit2", name = "converter-gson", version = "2.9.0" }
+runtimeLivedata = { module = "androidx.compose.runtime:runtime-livedata" }
+startupRuntime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
+androidx_room_runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx_room_compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx_room_ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx_room_testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+ui = { module = "androidx.compose.ui:ui" }
+uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTooling" }
+uiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiTestJunit4" }
+uiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiTestJunit4" }
+leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version = "2.10" }
+junit = { group = "junit", name = "junit", version = "4.13.2" }
+androidx_junit = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+androidx_espresso_core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.1" }
+androidxMaterial = { module = "androidx.compose.material:material", version.ref = "material" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrainsKotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+jetbrainsKotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "2.0.0-1.0.22" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

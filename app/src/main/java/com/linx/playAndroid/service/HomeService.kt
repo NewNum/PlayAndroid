@@ -4,6 +4,7 @@ import com.linx.net.paging.CommonalityPageModel
 import com.linx.net.base.NetUrl
 import com.linx.net.model.BaseResponse
 import com.linx.playAndroid.model.ArticleListData
+import com.linx.playAndroid.model.HomeBannerData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -23,7 +23,6 @@ import com.linx.playAndroid.widget.StatsBarUtil
  * 内容 导航
  */
 @ExperimentalCoilApi
-@ExperimentalPagerApi
 @Composable
 fun NavigationHost(
     navHostController: NavHostController,
@@ -33,17 +32,14 @@ fun NavigationHost(
 
     val context = LocalContext.current
 
-    NavHost(
-        navHostController,
-        startDestination = KeyNavigationRoute.MAIN.route,
+    NavHost(navHostController, startDestination = KeyNavigationRoute.MAIN.route,
         //todo 只有主界面需要这个padding
-        modifier = Modifier.padding(paddingValues),
-        builder = {
+        modifier = Modifier.padding(paddingValues), builder = {
 
             //主页面
             navigation(
+                startDestination = Nav.BottomNavScreen.HomeScreen.route,
                 route = KeyNavigationRoute.MAIN.route,
-                startDestination = Nav.BottomNavScreen.HomeScreen.route
             ) {
                 //首页
                 composable(Nav.BottomNavScreen.HomeScreen.route) {
@@ -186,8 +182,10 @@ fun NavigationHost(
 
             //H5页面
             composable(
-                route = "${KeyNavigationRoute.WEBVIEW.route}?url={url}", arguments = listOf(
-                    navArgument("url") { defaultValue = "https://www.wanandroid.com/" })
+                route = "${KeyNavigationRoute.WEBVIEW.route}?url={url}",
+                arguments = listOf(
+                    navArgument("url") { defaultValue = "https://www.wanandroid.com/" },
+                ),
             ) { backStackEntry ->
 
                 //系统颜色的状态栏
@@ -221,8 +219,7 @@ fun NavigationHost(
                 BackHandler { navHostController.navigateUp() }
             }
 
-        }
-    )
+        })
 }
 
 /**

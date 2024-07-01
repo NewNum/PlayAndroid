@@ -3,6 +3,8 @@ package com.linx.playAndroid.service
 import com.linx.net.base.NetUrl
 import com.linx.net.model.BaseResponse
 import com.linx.net.paging.CommonalityPageModel
+import com.linx.playAndroid.model.NaviData
+import com.linx.playAndroid.model.SystemData
 import com.linx.playAndroid.model.UserArticleListData
 import retrofit2.Call
 import retrofit2.http.GET
@@ -24,10 +26,10 @@ interface SquareService {
 
     //体系数据
     @GET(NetUrl.SYSTEM)
-    fun getSystem(): Call<BaseResponse>
+   fun getSystem():Call<BaseResponse>
 
     //导航数据
     @GET(NetUrl.NAVI)
-    fun getNavi(): Call<BaseResponse>
+   fun getNavi(): Call<BaseResponse>
 
 }

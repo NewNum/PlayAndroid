@@ -8,7 +8,7 @@ object RegisterRepo {
     /**
      * 注册
      */
-    fun getUserRegister(username: String, password: String, repassword: String) =
+    suspend   fun getUserRegister(username: String, password: String, repassword: String) =
         ServiceCreator.getService<RegisterService>().getUserRegister(username, password, repassword)
 
 }
