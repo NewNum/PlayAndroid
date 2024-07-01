@@ -1,7 +1,5 @@
 package com.linx.playAndroid.composable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -64,53 +62,42 @@ fun HomeCompose(navHostController: NavHostController) {
 
     }*/
     //首页页面的内容
+    val articleTopList = articleTopData.value ?: emptyList()
+    val state = homeViewModel.homeLazyListState
     SwipeRefreshContent(
-        homeListData,
-        state = homeViewModel.homeLazyListState,
-        header = {
-            Column {
+        lazyPagingListData = homeListData,
+        state = state,
+        content = {
+            item {
                 //轮播图
                 Banner(bannerListData.value) { link ->
                     navHostController.navigate("${KeyNavigationRoute.WEBVIEW.route}?url=$link")
                 }
-                LazyColumn() {
-                    val list: List<ArticleListData> = articleTopData.value ?: emptyList()
-                    for (data in list) {
-                        item {
-
-                            data.apply {
-                                HomeCardItemContent(
-                                    getAuthor(author, shareUser),
-                                    fresh,
-                                    false,
-                                    niceDate ?: "刚刚",
-                                    title ?: "",
-                                    superChapterName ?: "未知",
-                                    collect
-                                ) {
-                                    navHostController.navigate("${KeyNavigationRoute.WEBVIEW.route}?url=$link")
-                                }
-                            }
-                        }
-                    }
-                }
-
+            }
+            items(count = articleTopList.size) { index ->
+                val item = articleTopList[index]
+                HomeCardItem(item, navHostController)
             }
         }
-    ) { index, data ->
-        data.apply {
-            HomeCardItemContent(
-                getAuthor(author, shareUser),
-                fresh,
-                false,
-                niceDate ?: "刚刚",
-                title ?: "",
-                superChapterName ?: "未知",
-                collect
-            ) {
-                navHostController.navigate("${KeyNavigationRoute.WEBVIEW.route}?url=$link")
-            }
-        }
+    ) { index ,item->
+        HomeCardItem(item, navHostController)
     }
 
+}
+
+@Composable
+private fun HomeCardItem(data: ArticleListData, navHostController: NavHostController) {
+    data.apply {
+        HomeCardItemContent(
+            getAuthor(author, shareUser),
+            fresh,
+            true,
+            niceDate ?: "刚刚",
+            title ?: "",
+            superChapterName ?: "未知",
+            collect
+        ) {
+            navHostController.navigate("${KeyNavigationRoute.WEBVIEW.route}?url=$link")
+        }
+    }
 }

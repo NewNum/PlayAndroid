@@ -1,6 +1,5 @@
 package com.linx.playAndroid.public.paging
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,16 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.linx.common.widget.sleepTime
-import com.linx.playAndroid.R
 import com.linx.playAndroid.public.ErrorComposable
 
 class PagingStateUtil {
@@ -36,27 +31,29 @@ class PagingStateUtil {
      * 错误处理、加载中的显示方式
      */
     @Composable
-    fun <T : Any> PagingUtil(
+    fun PagingUtil(
         //paging数据
-        pagingData: LazyPagingItems<T>,
+        loadState: CombinedLoadStates,
+        itemCount: Int,
+        refresh: () -> Unit,
         //刷新状态
         refreshState: Boolean,
         updateRefreshState: (Boolean) -> Unit,
         content: @Composable () -> Unit
     ) {
 
-        when (pagingData.loadState.refresh) {
+        when (loadState.refresh) {
             //未加载且未观察到错误
             is LoadState.NotLoading -> NotLoading(updateRefreshState) {
                 //允许显示无数据布局 这里通常是第一次获取数据
-                when (pagingData.itemCount) {
+                when (itemCount) {
                     0 -> {
                         //第一次进入允许显示空布局
                         if (!showNullScreen) showNullScreen = true
                         //显示无数据布局
                         else
                             ErrorComposable("暂无数据，请点击重试") {
-                                pagingData.refresh()
+                                refresh()
                             }
                     }
 
@@ -64,28 +61,28 @@ class PagingStateUtil {
                 }
             }
             //加载失败
-            is LoadState.Error -> Error(pagingData, updateRefreshState)
+            is LoadState.Error -> Error(refresh, updateRefreshState)
             //加载中
             LoadState.Loading -> Loading(refreshState, updateRefreshState)
         }
 
         //如果在加载途中遇到错误的话，pagingData的状态为append
-        when (pagingData.loadState.append) {
+        when (loadState.append) {
             //加载失败
-            is LoadState.Error -> Error(pagingData, updateRefreshState)
+            is LoadState.Error -> Error(refresh, updateRefreshState)
             //加载中
             LoadState.Loading -> Loading(refreshState, updateRefreshState)
             //未加载且未观察到错误
             is LoadState.NotLoading -> NotLoading(updateRefreshState) {
                 //允许显示无数据布局 这里通常是第一次获取数据
-                when (pagingData.itemCount) {
+                when (itemCount) {
                     0 -> {
                         //第一次进入允许显示空布局
                         if (!showNullScreen) showNullScreen = true
                         //显示无数据布局
                         else
                             ErrorComposable("暂无数据，请点击重试") {
-                                pagingData.refresh()
+                                refresh()
                             }
                     }
 
@@ -117,13 +114,13 @@ class PagingStateUtil {
      * 加载失败
      */
     @Composable
-    private fun <T : Any> Error(
-        pagingData: LazyPagingItems<T>,
+    private fun  Error(
+        refresh: () -> Unit,
         updateRefreshState: (Boolean) -> Unit,
     ) {
         updateRefreshState.invoke(false)
         ErrorComposable {
-            pagingData.refresh()
+            refresh()
         }
     }
 

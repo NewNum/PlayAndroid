@@ -46,7 +46,7 @@ fun ProjectCompose(navHostController: NavHostController) {
 
     //项目页面的内容
     SwipeRefreshContent(
-        projectListData,
+        lazyPagingListData = projectListData,
         state = projectViewModel.projectLazyListState,
         cardHeight = 190.dp
     ) { index, data ->
@@ -64,14 +64,18 @@ fun ProjectCompose(navHostController: NavHostController) {
 private fun ProjectItemContent(project: ProjectListData, onClick: () -> Unit) {
 
     Column(
-        modifier = Modifier.clickable(onClick = onClick).padding(bottom = 6.dp, top = 6.dp)
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(bottom = 6.dp, top = 6.dp)
             .padding(start = 8.dp, end = 8.dp)
     ) {
 
         TopCard(project.author ?: "", project.publishTime.transitionDate())
 
         Row(
-            modifier = Modifier.padding(3.dp).weight(1f)
+            modifier = Modifier
+                .padding(3.dp)
+                .weight(1f)
         ) {
             CenterCard(project.envelopePic ?: "", project.title ?: "", project.desc ?: "")
         }

@@ -79,17 +79,19 @@ private fun IntegralScreen(
                     )
                 }
             },
-            content = { paddingValues: PaddingValues ->
+            content = { contextPadding ->
                 //带刷新头的列表
                 SwipeRefreshContent(
-                    coinRankData,
+                    modifier = Modifier.padding(contextPadding),
+                    lazyPagingListData = coinRankData,
                     cardHeight = 65.dp
-                ) { index: Int, data: CoinRankData ->
+                ) { index, item ->
                     CardContent(
                         (index + 1).toString(),
-                        data.username ?: "",
-                        data.coinCount.toString()
+                        item.username ?: "",
+                        item.coinCount.toString()
                     )
+
                 }
             }
         )
@@ -110,7 +112,9 @@ private fun CardContent(
     integralNum: String
 ) {
     Row(
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxSize(),
+        modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -149,8 +153,11 @@ private fun BottomBarScreen(
         elevation = 4.dp
     ) {
         Row(
-            modifier = Modifier.background(MaterialTheme.colors.background)
-                .padding(start = 30.dp, end = 30.dp).height(70.dp).navigationBarsPadding()
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(start = 30.dp, end = 30.dp)
+                .height(70.dp)
+                .navigationBarsPadding()
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -1,10 +1,12 @@
 package com.linx.playAndroid.composable
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -44,7 +46,8 @@ private fun MyShareArticlesScreen(
             },
             content = { paddingValues: PaddingValues ->
                 SwipeRefreshContent(
-                    myShareArticlesListData
+                    modifier = Modifier.padding(paddingValues),
+                    lazyPagingListData = myShareArticlesListData
                 ) { index: Int, data: MyCollectData ->
                     data.apply {
                         HomeCardItemContent(

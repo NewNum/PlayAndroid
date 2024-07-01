@@ -1,7 +1,13 @@
 package com.linx.playAndroid.public
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -14,11 +20,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
+import androidx.paging.CombinedLoadStates
 import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.linx.common.widget.sleepTime
 import com.linx.playAndroid.public.paging.PagingStateUtil
 
 /**
@@ -28,39 +33,42 @@ import com.linx.playAndroid.public.paging.PagingStateUtil
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun <T : Any> SwipeRefreshContent(
+    modifier: Modifier = Modifier,
     lazyPagingListData: LazyPagingItems<T>,
-    cardHeight: Dp = 120.dp,
     state: LazyListState = rememberLazyListState(),
-    header: @Composable (() -> Unit)? = null,
+    content: (LazyListScope.() -> Unit)? = null,
+    cardHeight: Dp = 120.dp,
     itemContent: @Composable (index: Int, data: T) -> Unit
 ) {
     var refreshing by remember { mutableStateOf(false) }
-    val updateRefreshStatus = { refresh: Boolean ->
-        refreshing = refresh
+    val updateRefreshStatus = { it: Boolean ->
+        refreshing = it
     }
 
     val refreshState = rememberPullRefreshState(refreshing = refreshing, onRefresh = {
         //刷新数据
         lazyPagingListData.refresh()
     })
+    val itemCount = lazyPagingListData.itemCount
     Box(
         modifier = Modifier
             .fillMaxSize()
             .pullRefresh(refreshState)
+            .then(modifier)
     ) {
-        Column(Modifier.fillMaxSize()) {
-            header?.invoke()
-            PagingStateUtil().PagingUtil(
-                lazyPagingListData,
-                refreshing,
-                updateRefreshStatus,
-            ) {
-                LazyColumn(modifier = Modifier.fillMaxSize(), state = state) {
-                    items(count = lazyPagingListData.itemCount) { index ->
-                        val item = lazyPagingListData[index]
-                        SimpleCard(cardHeight = cardHeight) {
-                            itemContent(index, item!!)
-                        }
+        PagingStateUtil().PagingUtil(
+            lazyPagingListData.loadState,
+            itemCount,
+            { lazyPagingListData.refresh() },
+            refreshing,
+            updateRefreshStatus,
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize(), state = state) {
+                if (content != null) content()
+                items(count = itemCount) { index ->
+                    SimpleCard(cardHeight = cardHeight) {
+                        val item = lazyPagingListData[index] ?: return@SimpleCard
+                        itemContent(index, item)
                     }
                 }
             }
@@ -81,7 +89,6 @@ fun <T : Any> SwipeRefreshContent(
  */
 @Composable
 fun <T : Any> SwipeRefreshContent(
-    viewModel: ViewModel,
     listData: List<T>?,
     state: LazyListState = rememberLazyListState(),
     noData: () -> Unit,
@@ -108,9 +115,7 @@ fun <T : Any> SwipeRefreshContent(
                 refreshState.isRefreshing = true
                 //刷新数据
                 noData()
-                viewModel.sleepTime(3000) {
-                    refreshState.isRefreshing = false
-                }
+                refreshState.isRefreshing = false
             }
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize(), state = state) {

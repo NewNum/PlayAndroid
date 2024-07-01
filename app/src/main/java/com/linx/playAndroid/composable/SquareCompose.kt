@@ -62,7 +62,6 @@ fun SquareCompose(navHostController: NavHostController) {
             if (systemData.value == null) squareViewModel.getSystemData()
 
             SwipeRefreshContent(
-                squareViewModel,
                 systemData.value,
                 state = squareViewModel.systemIndexState,
                 noData = { squareViewModel.getSystemData() },
@@ -75,7 +74,6 @@ fun SquareCompose(navHostController: NavHostController) {
             if (naviData.value == null) squareViewModel.getNavi()
 
             SwipeRefreshContent(
-                squareViewModel,
                 naviData.value,
                 state = squareViewModel.naviIndexState,
                 noData = { squareViewModel.getNavi() },
@@ -98,7 +96,7 @@ private fun SquareAndQuestionComposable(
 ) {
     //广场页面广场模块内容
     SwipeRefreshContent(
-        listdata,
+        lazyPagingListData = listdata,
         state = state
     ) { index, data ->
         data.apply {
@@ -125,7 +123,8 @@ private fun SystemCardItemContent(title: String, list: List<SystemData.Children?
 
     Column(
         //内边距
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .padding(top = 6.dp, bottom = 6.dp, start = 10.dp, end = 10.dp)
     ) {
 
@@ -156,7 +155,8 @@ private fun NaviCardItemContent(title: String, list: List<NaviData.Article?>?) {
 
     Column(
         //内边距
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .padding(top = 6.dp, bottom = 6.dp, start = 10.dp, end = 10.dp)
     ) {
 

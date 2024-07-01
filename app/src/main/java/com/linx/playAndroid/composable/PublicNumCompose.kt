@@ -37,7 +37,7 @@ fun PublicNumCompose(navHostController: NavHostController) {
 
     //公众号页面的内容
     SwipeRefreshContent(
-        publicNumListData,
+        lazyPagingListData = publicNumListData,
         state = publicNumViewModel.publicNumLazyListState
     ) { index, data ->
         data.apply {
